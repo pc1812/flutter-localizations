@@ -1,0 +1,5 @@
+{
+    "hello": "Bonjour!",
+    "bar": "Varr",
+    "greetTo": "Je suis très heureux de faire votre connaissance, {{name}}!"
+}
