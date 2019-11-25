@@ -1,5 +1,9 @@
 {
     "hello": "Bonjour!",
     "bar": "Varr",
-    "greetTo": "Je suis très heureux de faire votre connaissance, {{name}}!"
+    "greetTo": "Je suis très heureux de faire votre connaissance, {{name}}!",
+    "home": {
+        "page1": "Une",
+        "page2": "Tou"
+    }
 }

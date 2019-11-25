@@ -20,9 +20,6 @@
 // set the device's locale to Spanish, the app's locale will be
 // Spanish.
 
-import 'dart:async';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,7 +47,7 @@ class DemoApp extends StatefulWidget {
 class DemoAppState extends State<DemoApp> {
 
   Locale _locale;
-  List<String> _supportedLanguages;
+  List<Locale> _supportedLanguages;
   Map<String, Map<String, String>> _localizedValues;
 
   @override
@@ -77,10 +74,7 @@ class DemoAppState extends State<DemoApp> {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
-        supportedLocales: [
-          const Locale('en', ''),
-          const Locale('fr', ''),
-        ],
+        supportedLocales: this._supportedLanguages,
         // Watch out: MaterialApp creates a Localizations widget
         // with the specified delegates. DemoLocalizations.of()
         // will only find the app's Localizations widget if its
@@ -88,23 +82,6 @@ class DemoAppState extends State<DemoApp> {
         home: DemoHome(),
       );
     }
-    // return MaterialApp(
-    //   locale: _locale,
-    //   localizationsDelegates: [
-    //     MyLocalizationsDelegate(),
-    //     GlobalMaterialLocalizations.delegate,
-    //     GlobalWidgetsLocalizations.delegate,
-    //   ],
-    //   supportedLocales: [
-    //     const Locale('en', ''),
-    //     const Locale('ar', ''),
-    //   ],
-    //   // Watch out: MaterialApp creates a Localizations widget
-    //   // with the specified delegates. DemoLocalizations.of()
-    //   // will only find the app's Localizations widget if its
-    //   // context is a child of the app.
-    //   home: DemoHome(),
-    // );
   }
 
   _fetchLocale() async {
@@ -127,12 +104,17 @@ class DemoHome extends StatelessWidget {
         )
       ),
       body: Center(
-        child: Text(DeLocalizations.of(context, 'hello')),
+        child: Column(
+          children: [
+            Text(DeLocalizations.of(context, 'hello')),
+            Text(DeLocalizations.of(context, 'home.page1')),
+          ]
+        ),
       ),
     );
   }
 
-  _switchLocale(context) async {
+  _switchLocale(BuildContext context) async {
     // var mylocale = Localizations.localeOf(context);
     // print(mylocale.languageCode);
     // var next = mylocale.languageCode=='en'?'ar':'en';
@@ -147,49 +129,4 @@ class DemoHome extends StatelessWidget {
     await prefs.setString('country_code', '');
     DemoApp.setLocale(context, new Locale(next, ''));
   }
-}
-
-class MyLocalizations {
-  MyLocalizations(this.locale);
-
-  final Locale locale;
-
-  static Map<String, Map<String, String>> _localizedValues = {
-    'en': {
-      'foo': 'Foo',
-      'bar': 'Bar'
-    },
-    'ar': {
-      'foo': 'فو',
-      'bar': 'بار'
-    }
-  };
-
-  String translate(key) {
-    return _localizedValues[locale.languageCode][key];
-  }
-
-  static String of(BuildContext context, String key) {
-    return Localizations.of<MyLocalizations>(context, 
-      MyLocalizations).translate(key);
-  }
-}
-
-class MyLocalizationsDelegate extends 
-  LocalizationsDelegate<MyLocalizations> {
-  
-  const MyLocalizationsDelegate();
-
-  @override
-  bool isSupported(Locale locale) => 
-    ['en', 'ar'].contains(locale.languageCode);
-
-  @override
-  Future<MyLocalizations> load(Locale locale) {
-    return SynchronousFuture<MyLocalizations>
-      (MyLocalizations(locale));
-  }
-
-  @override
-  bool shouldReload(MyLocalizationsDelegate old) => false;
 }

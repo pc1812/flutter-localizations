@@ -1,0 +1,7 @@
+{
+    "supported_languages":[
+        {"code":"en_", "country":""},
+        {"code":"en", "country":"US"},
+        {"code":"fr", "country":"FR"}
+    ]
+}
